@@ -1,20 +1,48 @@
 # 🏃‍♂️ Health Activity Predictor
 
-AI-powered personalized health analytics and activity prediction system.
+AI-powered health predictions using machine learning. Predict tomorrow's fitness, steps, and sleep based on your activity patterns.
 
-## 🚀 Quick Start
+## 🚀 Live Demo
 
-### 1. Setup Environment
+**[Try it here →](https://healthactivitypredictor.streamlit.app)**
+
+**Login:** `user1` / `health1` (or user2-100)
+
+---
+
+## ⚡ Features
+
+- 🤖 Predict tomorrow's health metrics
+- 📊 Personal health dashboard
+- 📈 Track your progress over time
+- 🔐 Secure login with JWT
+
+---
+
+## 💻 Run Locally
 
 ```bash
-# Create virtual environment
-python3.11 -m venv venv
+# Clone
+git clone https://github.com/YOUR_USERNAME/healthactivitypredictor.git
+cd healthactivitypredictor
 
-# Activate (macOS/Linux)
-source venv/bin/activate
-
-# Activate (Windows)
-venv\Scripts\activate
-
-# Install dependencies
+# Install
 pip install -r requirements.txt
+
+# Run
+streamlit run app_authenticated.py
+```
+
+## 🛠️ Built With
+Python • Streamlit • XGBoost • Plotly
+
+📊 Model Accuracy
+R² Score: 98.7%
+
+Dataset: 687K health records
+
+Predictions: Fitness, Steps, Sleep
+
+## 👤 Author
+Karthik Kemidi - Final Year CSE AIML Student, CBIT Hyderabad
+
