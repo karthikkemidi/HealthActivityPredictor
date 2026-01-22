@@ -26,7 +26,7 @@ The application features secure JWT authentication, interactive dashboards, and 
 
 ---
 ## 📁 Project Structure
-
+```
 healthactivitypredictor/
 │
 ├── 📂 data/
@@ -56,7 +56,7 @@ healthactivitypredictor/
 ├── README.md # Project documentation
 ├── LICENSE # MIT License
 └── users.db # SQLite user database (auto-generated)
-
+```
 
 ---
 ## ✨ Key Features
