@@ -30,27 +30,33 @@ The application features secure JWT authentication, interactive dashboards, and 
 healthactivitypredictor/
 │
 ├── 📂 data/
-│   └── health_fitness_dataset.csv        # 687K health records
+│ └── health_fitness_dataset.csv # 687K health records, 3000 participants
 │
-├── 📂 models/saved_models/
-│   ├── xgboost_fitness_growth.pkl        # Fitness predictor
-│   ├── xgboost_daily_steps.pkl           # Steps predictor
-│   ├── xgboost_hours_sleep.pkl           # Sleep predictor
-│   └── feature_names.pkl                 # Feature list
+├── 📂 models/
+│ └── saved_models/
+│ ├── xgboost_fitness_growth.pkl # Fitness prediction model (R²=0.9872)
+│ ├── xgboost_daily_steps.pkl # Steps prediction model (R²=0.9845)
+│ ├── xgboost_hours_sleep.pkl # Sleep prediction model (R²=0.9801)
+│ └── feature_names.pkl # Feature list for model input
 │
 ├── 📂 src/
-│   ├── __init__.py                       # Package init
-│   ├── auth.py                           # JWT authentication
-│   ├── database.py                       # User CRUD operations
-│   └── model_training_xgboost.py         # ML training pipeline
+│ ├── init.py # Makes src a Python package
+│ ├── auth.py # JWT authentication & token management
+│ ├── database.py # SQLite user database operations
+│ └── model_training_xgboost.py # XGBoost model training pipeline
 │
 ├── 📂 .streamlit/
-│   └── config.toml                       # App configuration
+│ ├── config.toml # Streamlit app configuration
+│ └── secrets.toml # Secret keys (not in Git)
 │
-├── app_authenticated.py                  # Main application
-├── requirements.txt                      # Python dependencies
-├── runtime.txt                          # Python 3.11
-└── README.md                            # This file
+├── app_authenticated.py # Main Streamlit application
+├── requirements.txt # Python dependencies
+├── runtime.txt # Python version specification
+├── .gitignore # Git ignore rules
+├── README.md # Project documentation
+├── LICENSE # MIT License
+└── users.db # SQLite user database (auto-generated)
+
 
 ---
 ## ✨ Key Features
