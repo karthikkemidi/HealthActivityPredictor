@@ -25,7 +25,34 @@ Health Activity Predictor is a machine learning web application that analyzes yo
 The application features secure JWT authentication, interactive dashboards, and real-time predictions - making health tracking both insightful and actionable.
 
 ---
+## 📁 Project Structure
 
+healthactivitypredictor/
+│
+├── 📂 data/
+│   └── health_fitness_dataset.csv        # 687K health records
+│
+├── 📂 models/saved_models/
+│   ├── xgboost_fitness_growth.pkl        # Fitness predictor
+│   ├── xgboost_daily_steps.pkl           # Steps predictor
+│   ├── xgboost_hours_sleep.pkl           # Sleep predictor
+│   └── feature_names.pkl                 # Feature list
+│
+├── 📂 src/
+│   ├── __init__.py                       # Package init
+│   ├── auth.py                           # JWT authentication
+│   ├── database.py                       # User CRUD operations
+│   └── model_training_xgboost.py         # ML training pipeline
+│
+├── 📂 .streamlit/
+│   └── config.toml                       # App configuration
+│
+├── app_authenticated.py                  # Main application
+├── requirements.txt                      # Python dependencies
+├── runtime.txt                          # Python 3.11
+└── README.md                            # This file
+
+---
 ## ✨ Key Features
 
 ### 🔐 **Secure Authentication**
