@@ -3,7 +3,16 @@ import bcrypt
 import datetime
 from functools import wraps
 import streamlit as st
-SECRET_KEY = st.secrets.get("SECRET_KEY", "dev-secret-key-change-in-production")
+import os
+
+# Smart secret key loading (works locally AND in deployment)
+try:
+    # Try Streamlit secrets first (deployment)
+    SECRET_KEY = st.secrets.get("SECRET_KEY")
+except (FileNotFoundError, KeyError, AttributeError):
+    # Fallback to environment variable or hardcoded (local development)
+    SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-this-in-production-2026")
+
 ALGORITHM = "HS256"
 
 class AuthManager:
@@ -19,9 +28,7 @@ class AuthManager:
     
     @staticmethod
     def create_token(user_id, participant_id, username: str) -> str:
-        import time
-        
-        # Handle bytes conversion from database
+        # Handle bytes from database
         if isinstance(user_id, bytes):
             user_id = int.from_bytes(user_id, byteorder='little')
         if isinstance(participant_id, bytes):
@@ -43,7 +50,6 @@ class AuthManager:
         if isinstance(token, bytes):
             return token.decode('utf-8')
         return str(token)
-
     
     @staticmethod
     def decode_token(token: str) -> dict:

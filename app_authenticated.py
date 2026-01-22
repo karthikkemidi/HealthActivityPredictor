@@ -517,23 +517,40 @@ def show_main_app(db):
         """)
 
 def main():
+    """Main application entry point"""
     db = init_database()
     
-    # Auto-create users on EVERY run (Streamlit Cloud needs this)
-    if 'users_initialized' not in st.session_state:
-        try:
+    # Check if users already exist FIRST
+    try:
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM users")
+        user_count = cursor.fetchone()[0]
+        conn.close()
+        
+        # Only create if database is empty
+        if user_count == 0:
+            st.info("🔄 Creating default users (first run - takes ~30 seconds)...")
             df = load_sample_data()
             if df is not None:
                 created = db.create_default_users(df)
-                st.session_state['users_initialized'] = True
-                if created > 0:
-                    print(f"✅ Created {created} default users")
-        except Exception as e:
-            print(f"⚠️ User creation: {e}")
+                st.success(f"✅ Created {created} users! Please refresh the page.")
+                st.stop()  # Stop and ask user to refresh
+        
+        # Mark as initialized
+        if 'users_initialized' not in st.session_state:
+            st.session_state['users_initialized'] = True
+            
+    except Exception as e:
+        st.error(f"⚠️ Database setup error: {e}")
+        st.info("You can still register manually using the Register tab.")
     
     # Route based on authentication
     if not AuthManager.is_authenticated():
         show_login_page(db)
     else:
         show_main_app(db)
+
+if __name__ == "__main__":
+    main()
 

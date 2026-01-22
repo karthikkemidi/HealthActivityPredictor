@@ -19,7 +19,6 @@ class UserDatabase:
     
     def get_connection(self):
         conn = sqlite3.connect(self.db_path, check_same_thread=False)
-        # Force text mode for all columns
         conn.text_factory = str
         return conn
     
@@ -42,12 +41,15 @@ class UserDatabase:
         conn.close()
     
     def create_default_users(self, df: pd.DataFrame):
+        """Create user accounts for first 100 participants"""
         conn = self.get_connection()
         cursor = conn.cursor()
+        
         participants = df['participant_id'].unique()
         created_count = 0
         
-        for pid in participants[:100]:
+        # BACK TO 100 USERS (much faster!)
+        for pid in participants[:100]:  # ← Added [:100] back
             username = f"user{pid}"
             email = f"user{pid}@healthapp.com"
             password = f"health{pid}"
@@ -59,12 +61,19 @@ class UserDatabase:
                     VALUES (?, ?, ?, ?, ?)
                 ''', (username, email, password_hash, int(pid), f"Participant {pid}"))
                 created_count += 1
+                
+                # Print progress every 10 users
+                if created_count % 10 == 0:
+                    print(f"✓ Created {created_count} users...")
+                    
             except:
                 continue
         
         conn.commit()
         conn.close()
+        print(f"✅ Total users created: {created_count}")
         return created_count
+
     
     def authenticate_user(self, username: str, password: str) -> Optional[dict]:
         conn = self.get_connection()
@@ -80,7 +89,6 @@ class UserDatabase:
         if result:
             user_id, username, password_hash, participant_id, email, full_name = result
             
-            # Ensure proper types
             user_id = int(user_id) if user_id else None
             participant_id = int(participant_id) if participant_id else None
             
@@ -115,6 +123,12 @@ class UserDatabase:
             return True, "User registered successfully!"
         except Exception as e:
             conn.close()
+            if 'username' in str(e).lower():
+                return False, "Username already exists"
+            elif 'email' in str(e).lower():
+                return False, "Email already registered"
+            elif 'participant_id' in str(e).lower():
+                return False, "Participant ID already assigned"
             return False, str(e)
     
     def get_user_by_id(self, user_id: int):
